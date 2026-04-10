@@ -24,11 +24,17 @@ import static com.sdrtouch.rtlsdr.SdrDeviceProviderRegistry.SDR_DEVICE_PROVIDERS
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.drawable.Drawable;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -41,6 +47,7 @@ import com.sdrtouch.core.devices.SdrDeviceProvider;
 import com.sdrtouch.core.exceptions.SdrException;
 import com.sdrtouch.core.exceptions.SdrException.err_info;
 import com.sdrtouch.rtlsdr.driver.RtlSdrDevice;
+import com.sdrtouch.tools.AppPermissionHelper;
 import com.sdrtouch.tools.DeviceDialog;
 import com.sdrtouch.tools.ExceptionTools;
 import com.sdrtouch.tools.Log;
@@ -53,6 +60,8 @@ import marto.rtl_tcp_andro.R;
 public class DeviceOpenActivity extends FragmentActivity implements DeviceDialog.OnDeviceDialog {
 	private volatile SdrTcpArguments sdrTcpArguments;
 	private volatile UsbDevice usbDevice;
+	private volatile String callingPackage;
+	private volatile boolean permissionCheckDone;
 
 	private volatile SdrServiceConnection mConnection;
 
@@ -87,6 +96,21 @@ public class DeviceOpenActivity extends FragmentActivity implements DeviceDialog
 	@Override
 	protected void onStart() {
 		super.onStart();
+
+		resolveCallingPackage();
+
+		if (!permissionCheckDone) {
+			permissionCheckDone = true;
+			AppPermissionHelper.PermissionState permissionState = checkAndRequestPermission();
+			if (permissionState == AppPermissionHelper.PermissionState.DENY) {
+				Log.appendLine("Permission denied by user");
+				finishWithError(new SdrException(SdrException.ERROR_ACCESS));
+				return;
+			}
+			if (permissionState == null) {
+				return;
+			}
+		}
 
 		if (usbDevice != null) {
 			Log.appendLine("onStart with USB device");
@@ -128,6 +152,72 @@ public class DeviceOpenActivity extends FragmentActivity implements DeviceDialog
 	private void showDeviceSelectionDialog(List<SdrDevice> availableSdrDevices) {
 		// We can serialize the list of SdrDevices here since none of the devices have any callbacks
 		showDialog(DeviceDialog.invokeDialog(availableSdrDevices));
+	}
+
+	private void resolveCallingPackage() {
+		if (callingPackage != null) return;
+		android.net.Uri referrer = getReferrer();
+		Log.appendLine("Referrer: " + referrer);
+		if (referrer != null) {
+			String host = referrer.getHost();
+			Log.appendLine("Referrer host: " + host);
+			if (host != null && !host.isEmpty()) {
+				callingPackage = host;
+			}
+		}
+		if (callingPackage == null || callingPackage.isEmpty()) {
+			Intent intent = getIntent();
+			if (intent != null) {
+				String action = intent.getAction();
+				if (Intent.ACTION_VIEW.equals(action)) {
+					callingPackage = "external";
+				}
+			}
+		}
+		if (callingPackage == null) {
+			callingPackage = getPackageName();
+		}
+		Log.appendLine("Resolved callingPackage: " + callingPackage);
+	}
+
+	private AppPermissionHelper.PermissionState checkAndRequestPermission() {
+		if (callingPackage == null || callingPackage.equals(getPackageName())) {
+			return AppPermissionHelper.PermissionState.ALLOW_ONCE;
+		}
+		AppPermissionHelper.PermissionState state = AppPermissionHelper.getPermissionState(this, callingPackage);
+		if (state != null && state != AppPermissionHelper.PermissionState.DENY) {
+			return state;
+		}
+		showPermissionDialog();
+		return null;
+	}
+
+	private void showPermissionDialog() {
+		String appName = callingPackage;
+		try {
+			if (!callingPackage.equals("external")) {
+				PackageManager pm = getPackageManager();
+				ApplicationInfo ai = pm.getApplicationInfo(callingPackage, 0);
+				appName = pm.getApplicationLabel(ai).toString();
+			}
+		} catch (Exception ignored) {}
+
+		new MaterialAlertDialogBuilder(this)
+			.setTitle(appName)
+			.setMessage(R.string.permission_message)
+			.setNegativeButton(R.string.permission_deny, (dialog, which) -> {
+				AppPermissionHelper.setPermissionState(this, callingPackage, AppPermissionHelper.PermissionState.DENY);
+				finishWithError(new SdrException(SdrException.ERROR_ACCESS));
+			})
+			.setNeutralButton(R.string.permission_allow_once, (dialog, which) -> {
+				onStart();
+			})
+			.setPositiveButton(R.string.permission_allow_always, (dialog, which) -> {
+				AppPermissionHelper.setPermissionState(this, callingPackage, AppPermissionHelper.PermissionState.ALLOW_EVERY_TIME);
+				onStart();
+			})
+			.setCancelable(false)
+			.show();
 	}	
 	
 	@Override
