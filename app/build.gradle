@@ -3,28 +3,28 @@ plugins {
 }
 
 android {
-    namespace 'marto.rtl_tcp_andro'
-    compileSdk 34
+    namespace = 'marto.rtl_tcp_andro'
+    compileSdk = 34
 
     defaultConfig {
-        applicationId "marto.rtl_tcp_andro"
-        minSdk 21
-        targetSdk 36
-        versionCode 32
-        versionName "3.152"
+        applicationId = "marto.rtl_tcp_andro"
+        minSdk = 21
+        targetSdk = 36
+        versionCode = 32
+        versionName = "3.152"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled = false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 

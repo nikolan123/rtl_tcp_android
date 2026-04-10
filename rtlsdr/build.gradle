@@ -3,31 +3,36 @@ plugins {
 }
 
 android {
-    namespace 'info.martinmarinov.rtlsdr'
-    compileSdk 34
+    namespace = 'info.martinmarinov.rtlsdr'
+    compileSdk = 34
 
     defaultConfig {
-        minSdk 21
-        targetSdk 36
+        minSdk = 21
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles = ["consumer-rules.pro"]
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled = false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     externalNativeBuild {
         cmake {
-            path file('src/main/cpp/CMakeLists.txt')
+            path = file('src/main/cpp/CMakeLists.txt')
         }
+    }
+    lint {
+        targetSdk = 36
+    }
+    testOptions {
+        targetSdk = 36
     }
 }
 
