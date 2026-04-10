@@ -40,8 +40,10 @@
 	]]></string>
 	
 	<string name="warn_txt">Driveren har blitt vellykket installert! Vennligst start opp din vertsapp og den vil sette i gang driveren automatisk.</string>
+    <string name="driver_ready_title">Driver Klar</string>
+    <string name="driver_ready">Driveren er klar</string>
     <string name="platform_not_supported">Din Android-plattform er ikke støttet. Vennligst ta kontakt med oss for å fortelle oss mer om enheten din, sånn at vi kan støtte den i fremtiden.</string>
-    <string name="enable_gui">Aktiver avansert modus (for avlusing og for strømming til PC)</string>
+    <string name="enable_gui">Servermodus</string>
 
 	<string name="action_settings">Innstillinger</string>
 
