@@ -16,4 +16,32 @@
         <item name="android:backgroundDimAmount">0.45</item>
     </style>
 
+    <!-- Mimics native AOSP GrantPermissionsButtons style -->
+    <style name="GrantPermissionsButtons">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">52dp</item>
+        <item name="android:background">?attr/colorSecondaryContainer</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">?attr/colorOnSecondaryContainer</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingEnd">24dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <style name="GrantPermissionsButtons.Top">
+        <item name="android:background">@drawable/permission_button_top_bg</item>
+    </style>
+
+    <style name="GrantPermissionsButtons.Middle">
+        <item name="android:background">@drawable/permission_button_middle_bg</item>
+    </style>
+
+    <style name="GrantPermissionsButtons.Buttom">
+        <item name="android:background">@drawable/permission_button_bottom_bg</item>
+    </style>
+
 </resources>

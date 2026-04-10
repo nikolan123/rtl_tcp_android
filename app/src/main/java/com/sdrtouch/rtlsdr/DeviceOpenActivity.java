@@ -202,22 +202,34 @@ public class DeviceOpenActivity extends FragmentActivity implements DeviceDialog
 			}
 		} catch (Exception ignored) {}
 
-		new MaterialAlertDialogBuilder(this)
-			.setTitle(appName)
-			.setMessage(R.string.permission_message)
-			.setNegativeButton(R.string.permission_deny, (dialog, which) -> {
-				AppPermissionHelper.setPermissionState(this, callingPackage, AppPermissionHelper.PermissionState.DENY);
-				finishWithError(new SdrException(SdrException.ERROR_ACCESS));
-			})
-			.setNeutralButton(R.string.permission_allow_once, (dialog, which) -> {
-				onStart();
-			})
-			.setPositiveButton(R.string.permission_allow_always, (dialog, which) -> {
-				AppPermissionHelper.setPermissionState(this, callingPackage, AppPermissionHelper.PermissionState.ALLOW_EVERY_TIME);
-				onStart();
-			})
+		android.view.View view = getLayoutInflater().inflate(R.layout.dialog_permission, null);
+		android.widget.TextView tvPermissionMessage = view.findViewById(R.id.tvPermissionMessage);
+		String message = "Allow " + "<b>" + appName + "</b>" + " to access your SDR device?";
+		tvPermissionMessage.setText(androidx.core.text.HtmlCompat.fromHtml(message, androidx.core.text.HtmlCompat.FROM_HTML_MODE_LEGACY));
+
+		androidx.appcompat.app.AlertDialog dialog = new MaterialAlertDialogBuilder(this)
+			.setView(view)
 			.setCancelable(false)
-			.show();
+			.create();
+
+		view.findViewById(R.id.btnDeny).setOnClickListener(v -> {
+			AppPermissionHelper.setPermissionState(this, callingPackage, AppPermissionHelper.PermissionState.DENY);
+			finishWithError(new SdrException(SdrException.ERROR_ACCESS));
+			dialog.dismiss();
+		});
+
+		view.findViewById(R.id.btnAllowOnce).setOnClickListener(v -> {
+			onStart();
+			dialog.dismiss();
+		});
+
+		view.findViewById(R.id.btnAllowAlways).setOnClickListener(v -> {
+			AppPermissionHelper.setPermissionState(this, callingPackage, AppPermissionHelper.PermissionState.ALLOW_EVERY_TIME);
+			onStart();
+			dialog.dismiss();
+		});
+
+		dialog.show();
 	}	
 	
 	@Override

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="24dp"
+    android:paddingBottom="24dp">
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_usb" />
+
+    <TextView
+        android:id="@+id/tvPermissionMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingStart="24dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="24dp"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/btnAllowAlways"
+            style="@style/GrantPermissionsButtons.Top"
+            android:text="@string/permission_allow_always" />
+
+        <TextView
+            android:id="@+id/btnAllowOnce"
+            style="@style/GrantPermissionsButtons.Middle"
+            android:layout_marginTop="2dp"
+            android:text="@string/permission_allow_once" />
+
+        <TextView
+            android:id="@+id/btnDeny"
+            style="@style/GrantPermissionsButtons.Buttom"
+            android:layout_marginTop="2dp"
+            android:text="@string/permission_deny" />
+
+    </LinearLayout>
+
+</LinearLayout>
