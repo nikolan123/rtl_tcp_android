@@ -1,0 +1,75 @@
+# Build APK on every push & PR; upload artifacts.
+# GitHub Release (pre-release APK) on push to main/master only.
+name: Android build
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Set up Android SDK (API 34 + NDK for rtlsdr native code)
+        uses: android-actions/setup-android@v3
+        with:
+          packages: |
+            platform-tools
+            platforms;android-34
+            build-tools;34.0.0
+            ndk;26.1.10909125
+            cmake;3.22.1
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build release APK (signed with debug keystore)
+        run: ./gradlew assembleRelease --no-daemon --stacktrace
+
+      - name: Rename APK for uploads
+        run: |
+          cp app/build/outputs/apk/release/app-release.apk "sdr-driver-${{ github.sha }}.apk"
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sdr-driver-${{ github.sha }}
+          path: sdr-driver-${{ github.sha }}.apk
+          if-no-files-found: error
+
+      # --- Release (not on PRs): push to main/master ---
+
+      - name: Release — CI build (push to main/master only)
+        if: >
+          github.event_name == 'push'
+          && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ci-${{ github.run_number }}-${{ github.sha }}
+          name: CI #${{ github.run_number }} (${{ github.sha }})
+          files: sdr-driver-${{ github.sha }}.apk
+          prerelease: true
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
