@@ -24,6 +24,8 @@ import static com.sdrtouch.rtlsdr.SdrDeviceProviderRegistry.SDR_DEVICE_PROVIDERS
 
 import android.app.Application;
 
+import com.google.android.material.color.DynamicColors;
+
 import com.sdrtouch.core.devices.SdrDeviceProvider;
 import com.sdrtouch.tools.StrRes;
 
@@ -51,6 +53,9 @@ public class RtlSdrApplication extends Application {
 
     public void onCreate() {
         super.onCreate();
+
+        // Android 12+ (API 31): use wallpaper / system Material You palette instead of fixed M3 purple.
+        DynamicColors.applyToActivitiesIfAvailable(this);
 
         StrRes.res = getResources();
     }
