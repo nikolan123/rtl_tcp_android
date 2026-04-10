@@ -55,7 +55,7 @@ import com.sdrtouch.tools.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import marto.rtl_tcp_andro.R;
+import com.niko.sdrdriver.R;
 
 public class DeviceOpenActivity extends FragmentActivity implements DeviceDialog.OnDeviceDialog {
 	private volatile SdrTcpArguments sdrTcpArguments;
@@ -308,7 +308,7 @@ public class DeviceOpenActivity extends FragmentActivity implements DeviceDialog
 
 	public void finishWithError(int id, Integer second_id, String msg) {
 		final Intent data = new Intent();
-		data.putExtra("marto.rtl_tcp_andro.RtlTcpExceptionId", id);
+		data.putExtra("com.niko.sdrdriver.RtlTcpExceptionId", id);
 		
 		if (second_id != null) data.putExtra("detailed_exception_code", second_id);
 		if (msg != null) data.putExtra("detailed_exception_message", msg);

@@ -39,7 +39,7 @@ public class ExceptionTools {
 		
 		String lastForeign = null;
 		for (StackTraceElement stackTraceElement : elements) {
-			if (stackTraceElement.getClassName().startsWith("marto.")) {
+			if (stackTraceElement.getClassName().startsWith("com.niko.sdrdriver.") || stackTraceElement.getClassName().startsWith("com.sdrtouch.")) {
 				sb.append(String.format(" -> %s(%s:%d)\n", getSimpleClassName(stackTraceElement.getClassName()), stackTraceElement.getMethodName(), stackTraceElement.getLineNumber()));
 			} else {
 				String line = String.format(" -> %s ", getSimpleClassName(stackTraceElement.getClassName()));

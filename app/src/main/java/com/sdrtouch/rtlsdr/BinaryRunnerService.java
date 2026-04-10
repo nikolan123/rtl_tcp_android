@@ -46,7 +46,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 
-import marto.rtl_tcp_andro.R;
+import com.niko.sdrdriver.R;
 
 public class BinaryRunnerService extends Service {
     public static final String ACTION_SDR_DEVICE_ATTACHED = "com.sdrtouch.rtlsdr.SDR_DEVICE_ATTACHED";

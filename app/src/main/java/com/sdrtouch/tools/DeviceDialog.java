@@ -32,7 +32,7 @@ import com.sdrtouch.core.devices.SdrDevice;
 
 import java.util.List;
 
-import marto.rtl_tcp_andro.R;
+import com.niko.sdrdriver.R;
 
 public class DeviceDialog extends DialogFragment {
 	private final static String SDR_DEVICE = "sdrDevice_%d";
