@@ -27,13 +27,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
@@ -48,6 +48,7 @@ import com.sdrtouch.tools.DialogManager;
 import com.sdrtouch.tools.DialogManager.dialogs;
 import com.sdrtouch.tools.Log;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import marto.rtl_tcp_andro.R;
 
@@ -125,7 +126,11 @@ public class StreamActivity extends FragmentActivity implements Log.Callback {
 			ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 			ClipData clip = ClipData.newPlainText("text label",textToClip);
 			clipboard.setPrimaryClip(clip);
-			Toast.makeText(getApplicationContext(), R.string.copied_to_clip, Toast.LENGTH_LONG).show();
+			// API 33+ shows its own "copied" confirmation; avoid doubling with Snackbar.
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+				View root = findViewById(android.R.id.content);
+				Snackbar.make(root, R.string.copied_to_clip, Snackbar.LENGTH_LONG).show();
+			}
 		});
 		
 		findViewById(R.id.clearbutton).setOnClickListener(v -> Log.clear());
