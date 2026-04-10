@@ -53,7 +53,7 @@
         android:name="com.sdrtouch.rtlsdr.RtlSdrApplication">
 
         <activity android:name="com.sdrtouch.rtlsdr.DeviceOpenActivity"
-                  android:theme="@android:style/Theme.Dialog"
+                  android:theme="@style/Theme.DeviceOpenDialog"
                   android:exported="true" >
             <intent-filter>
                 <data android:scheme="iqsrc" />

@@ -5,4 +5,15 @@
         <item name="android:navigationBarColor">?attr/colorSurfaceContainer</item>
     </style>
 
+    <!-- Floating dialog when a host app opens the iqsrc:// flow (DeviceOpenActivity) -->
+    <style name="Theme.DeviceOpenDialog" parent="Theme.Material3.DayNight.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowMinWidthMajor">@dimen/device_open_dialog_min_width</item>
+        <item name="windowMinWidthMinor">@dimen/device_open_dialog_min_width</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.45</item>
+    </style>
+
 </resources>

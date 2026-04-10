@@ -1,6 +1,8 @@
 <resources>
 
-    <string name="app_name">Rtl-sdr driver</string>
+    <string name="app_name">SDR Driver</string>
+    <string name="device_open_loading_title">SDR Driver</string>
+    <string name="device_open_loading_subtitle">Starting…</string>
     <string name="sdr_tcp_exec">sdr_tcp</string>
 	<string name="help">Help</string>
 	<string name="stream">Start stream</string>
