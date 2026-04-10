@@ -34,7 +34,6 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
@@ -48,6 +47,7 @@ import com.sdrtouch.tools.Check;
 import com.sdrtouch.tools.DialogManager;
 import com.sdrtouch.tools.DialogManager.dialogs;
 import com.sdrtouch.tools.Log;
+import com.google.android.material.button.MaterialButton;
 
 import marto.rtl_tcp_andro.R;
 
@@ -56,7 +56,7 @@ public class StreamActivity extends FragmentActivity implements Log.Callback {
 	private TextView terminal;
 	private ScrollView scroll;
 	private EditText arguments;
-	private ToggleButton onoff;
+	private MaterialButton onoff;
 
 	private static final int START_REQ_CODE = 1;
 	
@@ -72,7 +72,7 @@ public class StreamActivity extends FragmentActivity implements Log.Callback {
 
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
-			runOnUiThread(() -> onoff.setChecked(false));
+			runOnUiThread(() -> setStreamButtonRunningState(false));
 			service = null;
 		}
     };
@@ -80,12 +80,12 @@ public class StreamActivity extends FragmentActivity implements Log.Callback {
     private final BinaryRunnerService.StatusCallback serviceStatusCallback = new BinaryRunnerService.StatusCallback() {
 		@Override
 		public void onServerRunning() {
-			runOnUiThread(() -> onoff.setChecked(true));
+			runOnUiThread(() -> setStreamButtonRunningState(true));
 		}
 		
 		@Override
 		public void onServerNotRunning() {
-			runOnUiThread(() -> onoff.setChecked(false));
+			runOnUiThread(() -> setStreamButtonRunningState(false));
 		}
 	};
 
@@ -115,7 +115,7 @@ public class StreamActivity extends FragmentActivity implements Log.Callback {
 				intent.setClass(StreamActivity.this, DeviceOpenActivity.class);
 				StreamActivity.this.startActivityForResult(intent, START_REQ_CODE);
 			}
-			onoff.setChecked(service.isRunning());
+			setStreamButtonRunningState(service.isRunning());
 		});
 
 		findViewById(R.id.license).setOnClickListener(ignored -> showDialog(dialogs.DIAG_LICENSE));
@@ -135,6 +135,11 @@ public class StreamActivity extends FragmentActivity implements Log.Callback {
 		if (!RtlSdrApplication.IS_PLATFORM_SUPPORTED) {
 			((TextView) findViewById(R.id.warntext)).setText(R.string.platform_not_supported);
 		}
+	}
+
+	private void setStreamButtonRunningState(boolean running) {
+		onoff.setChecked(running);
+		onoff.setText(running ? getString(R.string.kill) : getString(R.string.stream));
 	}
 
 	public void showDialog(final DialogManager.dialogs id, final String ... args) {
