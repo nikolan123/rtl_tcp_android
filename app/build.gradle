@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = 'com.niko.sdrdriver'
+    namespace = 'marto.rtl_tcp_andro'
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.niko.sdrdriver"
+        applicationId = "marto.rtl_tcp_andro"
         minSdk = 21
         targetSdk = 36
         versionCode = 32

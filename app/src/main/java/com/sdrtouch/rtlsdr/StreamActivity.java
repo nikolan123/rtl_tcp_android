@@ -50,7 +50,7 @@ import com.sdrtouch.tools.Log;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import com.niko.sdrdriver.R;
+import marto.rtl_tcp_andro.R;
 
 public class StreamActivity extends FragmentActivity implements Log.Callback {
 
@@ -200,7 +200,7 @@ public class StreamActivity extends FragmentActivity implements Log.Callback {
 				else {
 					err_info einfo = err_info.unknown_error;
 					try {
-						einfo = err_info.values()[data.getIntExtra("com.niko.sdrdriver.RtlTcpExceptionId", err_info.unknown_error.ordinal())];
+						einfo = err_info.values()[data.getIntExtra("marto.rtl_tcp_andro.RtlTcpExceptionId", err_info.unknown_error.ordinal())];
 					} catch (Throwable ignored) {
 					}
 					Log.appendLine("ERROR STARTING! Reason: " + einfo);

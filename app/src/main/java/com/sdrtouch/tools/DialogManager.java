@@ -35,7 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import com.niko.sdrdriver.R;
+import marto.rtl_tcp_andro.R;
 
 /**
  * Creates various dialogs
