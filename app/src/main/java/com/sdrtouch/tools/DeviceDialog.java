@@ -20,7 +20,6 @@
 
 package com.sdrtouch.tools;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -28,6 +27,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.sdrtouch.core.devices.SdrDevice;
 
 import java.util.List;
@@ -67,7 +67,7 @@ public class DeviceDialog extends DialogFragment {
 			options[id] = sdrDevice.getName();
 		}
 		
-		return new AlertDialog.Builder(getActivity())
+		return new MaterialAlertDialogBuilder(getActivity())
 		.setItems(options, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {

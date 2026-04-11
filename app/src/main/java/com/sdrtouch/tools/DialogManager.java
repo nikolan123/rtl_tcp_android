@@ -20,7 +20,7 @@
 
 package com.sdrtouch.tools;
 
-import android.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.Html;
@@ -29,6 +29,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -84,7 +86,8 @@ public class DialogManager extends DialogFragment {
 	private Dialog createDialog(final dialogs id) {
 		switch (id) {
 		case DIAG_ABOUT:
-			final AlertDialog addd = new AlertDialog.Builder(getActivity())
+			final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
+			final AlertDialog addd = builder
 			.setTitle(R.string.help)
 			.setPositiveButton(R.string.btn_ok, (dialog, which) -> dialog.dismiss())
 			.setMessage(Html.fromHtml(getString(R.string.help_info))).create();
@@ -98,10 +101,10 @@ public class DialogManager extends DialogFragment {
 					}
 				});
 			} catch (Exception ignored) {}
-			
+
 			return addd;
 		case DIAG_LICENSE:
-				return new AlertDialog.Builder(getActivity())
+				return new MaterialAlertDialogBuilder(getActivity())
 						.setTitle("License")
 						.setPositiveButton(R.string.btn_ok, (dialog, which) -> dialog.dismiss())
 						.setMessage(readWholeStream(R.raw.license))
