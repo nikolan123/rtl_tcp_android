@@ -76,89 +76,83 @@
         android:layout_weight="1"
         android:visibility="gone">
 
+        <!-- Command input area -->
         <LinearLayout
-            android:id="@+id/guielements"
+            android:id="@+id/command_area"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sdr_tcp_exec"
+                android:textAppearance="?attr/textAppearanceLabelMedium"
+                android:textColor="?attr/colorOnSurfaceVariant" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:hint="@string/args_hint"
+                app:boxBackgroundMode="outline">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/commandline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:inputType="text"
+                    android:text="@string/default_args" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/binaryname"
-                    android:layout_width="105dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/sdr_tcp_exec"
-                    android:textAppearance="?attr/textAppearanceLabelLarge" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:hint="@string/args_hint"
-                    app:boxBackgroundMode="outline">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/commandline"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:text="@string/default_args" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-
-            <RelativeLayout
-                android:id="@+id/RelativeLayout1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/onoff"
                     style="@style/Widget.Material3.Button.TonalButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
                     android:checkable="true"
                     android:text="@string/stream" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/license"
-                    style="@style/Widget.Material3.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:text="@string/license" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/help"
                     style="@style/Widget.Material3.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_toStartOf="@id/license"
                     android:text="@string/help" />
-            </RelativeLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/license"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/license" />
+            </LinearLayout>
         </LinearLayout>
 
+        <!-- Terminal output -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/terminal_card"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:layout_above="@+id/footer"
-            android:layout_below="@+id/guielements"
-            android:layout_marginTop="12dp"
+            android:layout_below="@+id/command_area"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
             app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
             app:cardElevation="0dp"
             app:strokeColor="?attr/colorOutlineVariant"
@@ -183,14 +177,12 @@
             </ScrollView>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Footer buttons -->
         <LinearLayout
             android:id="@+id/footer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="8dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
